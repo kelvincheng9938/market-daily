@@ -1,0 +1,19 @@
+{
+  "market": [
+    { "name": "SPY", "price": 643.3, "delta": -0.5 },
+    { "name": "QQQ", "price": 577.11, "delta": 0.6 },
+    { "name": "GOLD", "price": 2350, "delta": 0.5 },
+    { "name": "WTI", "price": 78.3, "delta": -1.2 },
+    { "name": "BRENT", "price": 82.1, "delta": -0.8 },
+    { "name": "BTC", "price": 116426, "delta": 2.5 }
+  ],
+  "news": [
+    { "title": "[今日] Fed 談話與 Jackson Hole 會議在即", "source": "來源: Fed / Yahoo", "importance": "high" },
+    { "title": "[今日] BLS 排程：進口/出口物價指數", "source": "來源: BLS", "importance": "medium" },
+    { "title": "[今日] 零售巨頭財報概觀", "source": "來源: WSJ", "importance": "medium" }
+  ],
+  "timeline": [
+    { "time": "8/22 10:00 ET", "event": "美國 PMI 公布", "importance": "medium" },
+    { "time": "8/21 盤後", "event": "NVIDIA 財報", "importance": "high" }
+  ]
+}
