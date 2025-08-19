@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>每日市場報告 v2.6</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial, sans-serif; background:#f8f9fa; margin:0; padding:0; }
+    header { background:#2c3e50; color:white; padding:15px; font-size:20px; font-weight:bold; }
+    .container { padding:20px; }
+    .cards { display:flex; gap:10px; flex-wrap:wrap; }
+    .card {
+      flex:1; min-width:120px; background:white; border-radius:8px;
+      padding:10px; text-align:center; box-shadow:0 2px 5px rgba(0,0,0,0.1);
+    }
+    .up { color:green; font-weight:bold; }
+    .down { color:red; font-weight:bold; }
+    h2 { margin-top:30px; font-size:18px; border-left:5px solid #2c3e50; padding-left:10px; }
+    .news, .timeline { margin-top:10px; }
+    .news-item, .time-item {
+      background:white; border-radius:8px; padding:10px; margin-bottom:10px;
+      box-shadow:0 1px 3px rgba(0,0,0,0.1);
+      display:flex; justify-content:space-between; align-items:center;
+    }
+    .icon { font-size:18px; }
+    .time-label { font-weight:bold; margin-right:10px; }
+  </style>
+</head>
+<body>
+  <header>📊 每日市場報告 v2.6</header>
+  <div class="container">
+    <h2>市場概況</h2>
+    <div class="cards" id="market"></div>
+
+    <h2>新聞摘要</h2>
+    <div class="news" id="news"></div>
+
+    <h2>時間表</h2>
+    <div class="timeline" id="timeline"></div>
+  </div>
+
+  <script>
+    async function loadData() {
+      try {
+        const res = await fetch("market_close.json"); // 從 GitHub 同目錄讀
+        const data = await res.json();
+
+        // 市場概況
+        const marketDiv = document.getElementById("market");
+        data.market.forEach(m => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <div>${m.name}</div>
+            <div>${m.price}</div>
+            <div class="${m.delta>0?'up':'down'}">${m.delta>0?'+':''}${m.delta}%</div>
+          `;
+          marketDiv.appendChild(card);
+        });
+
+        // 新聞摘要
+        const newsDiv = document.getElementById("news");
+        data.news.forEach(n => {
+          const item = document.createElement("div");
+          item.className = "news-item";
+          let icon = "ℹ️";
+          if (n.importance==="high") icon="🔥";
+          else if (n.importance==="medium") icon="⚠️";
+          item.innerHTML = `<div><b>${n.title}</b><br>${n.source}</div><div class="icon">${icon}</div>`;
+          newsDiv.appendChild(item);
+        });
+
+        // 時間表
+        const timeDiv = document.getElementById("timeline");
+        data.timeline.forEach(t => {
+          const item = document.createElement("div");
+          item.className = "time-item";
+          let icon = "ℹ️";
+          if (t.importance==="high") icon="🔥";
+          else if (t.importance==="medium") icon="⚠️";
+          item.innerHTML = `<div><span class="time-label">${t.time}</span> ${t.event}</div><div class="icon">${icon}</div>`;
+          timeDiv.appendChild(item);
+        });
+
+      } catch (err) {
+        console.error("載入失敗:", err);
+      }
+    }
+    loadData();
+  </script>
+</body>
+</html>
